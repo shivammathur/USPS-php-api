@@ -2,26 +2,27 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * Class PriorityMailServiceStandards.
  */
 class PriorityMailServiceStandards extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'PriorityMail';
+    protected string $apiVersion = 'PriorityMail';
     /**
-     * @var array - route added so far.
+     * route added so far.
      */
-    protected $route = [];
+    protected array $route = [];
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function getServiceStandard()
+    public function getServiceStandard(): bool|string
     {
         return $this->doRequest();
     }
@@ -29,20 +30,16 @@ class PriorityMailServiceStandards extends USPSBase
     /**
      * returns array of all routes added so far.
      *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->route;
     }
 
     /**
      * Add route to the stack.
-     *
-     * @param $origin_zip
-     * @param $destination_zip
      */
-    public function addRoute($origin_zip, $destination_zip)
+    public function addRoute(string $origin_zip, string $destination_zip): void
     {
         $this->route = [
             'OriginZip'      => $origin_zip,

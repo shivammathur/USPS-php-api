@@ -1,9 +1,11 @@
 <?php
 
+use USPS\InternationalLabel;
+
 require_once('autoload.php');
 
 // Initiate and set the username provided from usps
-$label = new \USPS\InternationalLabel('xxxx');
+$label = new InternationalLabel('xxxx');
 
 // Express by default
 $label->setApiVersion('ExpressMailIntl');
@@ -24,7 +26,11 @@ $label->setWeightOunces(1);
 $label->addContent('Shirt', '10', 0, 10);
 
 // Perform the request and return result
-$label->createLabel();
+try {
+    $label->createLabel();
+} catch (Exception $e) {
+    // Handle any errors
+}
 
 //print_r($label->getArrayResponse());
 print_r($label->getPostData());

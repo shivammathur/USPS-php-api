@@ -1,9 +1,11 @@
 <?php
 
+use USPS\FirstClassServiceStandards;
+
 require_once('autoload.php');
 
 // Initiate and set the username provided from usps.
-$delivery = new \USPS\FirstClassServiceStandards('xxxx');
+$delivery = new FirstClassServiceStandards('xxxx');
 
 // During test mode this seems not to always work as expected.
 $delivery->setTestMode(true);
@@ -12,7 +14,11 @@ $delivery->setTestMode(true);
 $delivery->addRoute('91730', '90025');
 
 // Perform the call and print out the results.
-var_dump($delivery->getServiceStandard());
+try {
+    var_dump($delivery->getServiceStandard());
+} catch (Exception $e) {
+    // Handle any errors.
+}
 var_dump($delivery->getArrayResponse());
 
 // Check if it was completed

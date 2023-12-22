@@ -2,26 +2,27 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * Class ServiceDeliveryCalculator.
  */
 class ServiceDeliveryCalculator extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'SDCGetLocations';
+    protected string $apiVersion = 'SDCGetLocations';
     /**
-     * @var array - route added so far.
+     * route added so far.
      */
-    protected $route = [];
+    protected array $route = [];
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function getServiceDeliveryCalculation()
+    public function getServiceDeliveryCalculation(): bool|string
     {
         return $this->doRequest();
     }
@@ -29,38 +30,32 @@ class ServiceDeliveryCalculator extends USPSBase
     /**
      * returns array of all routes added so far.
      *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->route;
     }
 
     /**
-     * @param      $mail_class      integer from 0 to 6 indicating the class of mail.
-     *                              “0” = All Mail Classes
-     *                              “1” = Express Mail
-     *                              “2” = Priority Mail
-     *                              “3” = First Class Mail
-     *                              “4” = Standard Mail
-     *                              “5” = Periodicals
-     *                              “6” = Package Services
-     * @param      $origin_zip      5 digit zip code.
-     * @param      $destination_zip 5 digit zip code.
-     * @param null $accept_date     string in the format dd-mmm-yyyy.
-     * @param null $accept_time     string in the format HHMM.
+     * Add route.
      */
-    public function addRoute($mail_class, $origin_zip, $destination_zip, $accept_date = null, $accept_time = null)
+    public function addRoute(
+        string|int $mail_class,
+        string|int $origin_zip,
+        string|int $destination_zip,
+        string|null $accept_date = null,
+        string|null $accept_time = null
+    ): void
     {
         $route = [
             'MailClass'      => $mail_class,
             'OriginZIP'      => $origin_zip,
             'DestinationZIP' => $destination_zip,
         ];
-        if (!empty($accept_date)) {
+        if ($accept_date !== null && $accept_date !== '' && $accept_date !== '0') {
             $route['AcceptDate'] = $accept_date;
         }
-        if (!empty($accept_time)) {
+        if ($accept_time !== null && $accept_time !== '' && $accept_time !== '0') {
             $route['AcceptTime'] = $accept_time;
         }
         $this->route = $route;

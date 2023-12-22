@@ -2,6 +2,8 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * USPS Address Verify Class
  * used to verify an address is valid.
@@ -13,60 +15,50 @@ namespace USPS;
 class AddressVerify extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'Verify';
+    protected string $apiVersion = 'Verify';
     /**
-     * @var string - revision version for including additional response fields
+     * revision version for including additional response fields
      */
-    protected $revision = '';
+    protected string $revision = '';
     /**
-     * @var array - list of all addresses added so far
+     * list of all addresses added so far
      */
-    protected $addresses = [];
+    protected array $addresses = [];
 
     /**
      * Perform the API call to verify the address.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function verify()
+    public function verify(): bool|string
     {
         return $this->doRequest();
     }
 
     /**
      * returns array of all addresses added so far.
-     *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
-        $postFields = !empty($this->revision) ? ['Revision' => $this->revision] : [];
+        $postFields = $this->revision === '' || $this->revision === '0' ? [] : ['Revision' => $this->revision];
         return array_merge($postFields, $this->addresses);
     }
 
     /**
      * Add Address to the stack.
-     *
-     * @param Address $data
-     * @param string  $id   the address unique id
      */
-    public function addAddress(Address $data, $id = null)
+    public function addAddress(Address $data, int|null $id = null): void
     {
-        $packageId = $id !== null ? $id : ((count($this->addresses) + 1));
+        $packageId = $id ?? count($this->addresses) + 1;
 
         $this->addresses['Address'][] = array_merge(['@attributes' => ['ID' => $packageId]], $data->getAddressInfo());
     }
 
     /**
      * Set the revision value
-     *
-     * @param string|int $value
-     *
-     * @return object AddressVerify
      */
-    public function setRevision($value)
+    public function setRevision($value): self
     {
         $this->revision = (string)$value;
 

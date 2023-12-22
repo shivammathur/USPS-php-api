@@ -2,31 +2,32 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * Class TrackConfirm.
  */
 class TrackConfirm extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'TrackV2';
+    protected string $apiVersion = 'TrackV2';
     /**
-     * @var array - list of all packages added so far
+     * list of all packages added so far
      */
-    protected $packages = [];
+    protected array $packages = [];
 
-    public function getEndpoint()
+    public function getEndpoint(): string
     {
         return self::$testMode ? 'https://production.shippingapis.com/ShippingAPITest.dll' : 'https://production.shippingapis.com/ShippingAPI.dll';
     }
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function getTracking()
+    public function getTracking(): bool|string
     {
         return $this->doRequest();
     }
@@ -34,21 +35,16 @@ class TrackConfirm extends USPSBase
     /**
      * returns array of all packages added so far.
      *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->packages;
     }
 
     /**
      * Add Package to the stack.
-     *
-     * @param string $id the address unique id
-     *
-     * @return void
      */
-    public function addPackage($id)
+    public function addPackage(string|int $id): void
     {
         $this->packages['TrackID'][] = ['@attributes' => ['ID' => $id]];
     }

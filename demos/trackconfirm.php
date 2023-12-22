@@ -1,9 +1,11 @@
 <?php
 
+use USPS\TrackConfirm;
+
 require_once('autoload.php');
 
 // Initiate and set the username provided from usps
-$tracking = new \USPS\TrackConfirm('xxxx');
+$tracking = new TrackConfirm('xxxx');
 
 // During test mode this seems not to always work as expected
 $tracking->setTestMode(true);
@@ -12,7 +14,11 @@ $tracking->setTestMode(true);
 $tracking->addPackage('EJ958083578US');
 
 // Perform the call and print out the results
-print_r($tracking->getTracking());
+try {
+    print_r($tracking->getTracking());
+} catch (Exception $e) {
+    // Handle any errors
+}
 print_r($tracking->getArrayResponse());
 
 // Check if it was completed

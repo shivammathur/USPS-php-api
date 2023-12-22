@@ -8,51 +8,45 @@ namespace USPS;
  * @since 1.0
  * @author Vincent Gabriel
  */
+
+use Exception;
+
 class CityStateLookup extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'CityStateLookup';
+    protected string $apiVersion = 'CityStateLookup';
     /**
-     * @var array - list of all addresses added so far
+     * list of all addresses added so far
      */
-    protected $addresses = [];
+    protected array $addresses = [];
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function lookup()
+    public function lookup(): bool|string
     {
         return $this->doRequest();
     }
 
     /**
      * returns array of all addresses added so far.
-     *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->addresses;
     }
 
     /**
      * Add zip zip code to the stack.
-     *
-     * @param string $zip5 - zip code 5 integers
-     * @param string $zip4 - optional 4 integers zip code
-     * @param string $id   the address unique id
-     *
-     * @return void
      */
-    public function addZipCode($zip5, $zip4 = '', $id = null)
+    public function addZipCode(string $zip5, string $zip4 = '', string|int|null $id = null): void
     {
-        $packageId = $id !== null ? $id : ((count($this->addresses) + 1));
+        $packageId = $id ?? count($this->addresses) + 1;
         $zipCodes = ['Zip5' => $zip5];
-        if ($zip4) {
+        if ($zip4 !== '' && $zip4 !== '0') {
             $zipCodes['Zip4'] = $zip4;
         }
         $this->addresses['ZipCode'][] = array_merge(['@attributes' => ['ID' => $packageId]], $zipCodes);

@@ -13,168 +13,131 @@ namespace USPS;
 class RatePackage extends Rate
 {
     /**
-     * @var array - list of all packages added so far
+     * list of all packages added so far
      */
-    protected $packageInfo = [];
+    protected array $packageInfo = [];
     /**
      * Services constants.
      */
-    const SERVICE_FIRST_CLASS = 'FIRST CLASS';
-    const SERVICE_FIRST_CLASS_COMMERCIAL = 'FIRST CLASS COMMERCIAL';
-    const SERVICE_FIRST_CLASS_HFP_COMMERCIAL = 'FIRST CLASS HFP COMMERCIAL';
-    const SERVICE_PRIORITY = 'PRIORITY';
-    const SERVICE_PRIORITY_COMMERCIAL = 'PRIORITY COMMERCIAL';
-    const SERVICE_PRIORITY_HFP_COMMERCIAL = 'PRIORITY HFP COMMERCIAL';
-    const SERVICE_EXPRESS = 'EXPRESS';
-    const SERVICE_EXPRESS_COMMERCIAL = 'EXPRESS COMMERCIAL';
-    const SERVICE_EXPRESS_SH = 'EXPRESS SH';
-    const SERVICE_EXPRESS_SH_COMMERCIAL = 'EXPRESS SH COMMERCIAL';
-    const SERVICE_EXPRESS_HFP = 'EXPRESS HFP';
-    const SERVICE_EXPRESS_HFP_COMMERCIAL = 'EXPRESS HFP COMMERCIAL';
-    const SERVICE_PARCEL = 'PARCEL';
-    const SERVICE_MEDIA = 'MEDIA';
-    const SERVICE_LIBRARY = 'LIBRARY';
-    const SERVICE_ALL = 'ALL';
-    const SERVICE_ONLINE = 'ONLINE';
+    final public const SERVICE_FIRST_CLASS = 'FIRST CLASS';
+    final public const SERVICE_FIRST_CLASS_COMMERCIAL = 'FIRST CLASS COMMERCIAL';
+    final public const SERVICE_FIRST_CLASS_HFP_COMMERCIAL = 'FIRST CLASS HFP COMMERCIAL';
+    final public const SERVICE_PRIORITY = 'PRIORITY';
+    final public const SERVICE_PRIORITY_COMMERCIAL = 'PRIORITY COMMERCIAL';
+    final public const SERVICE_PRIORITY_HFP_COMMERCIAL = 'PRIORITY HFP COMMERCIAL';
+    final public const SERVICE_EXPRESS = 'EXPRESS';
+    final public const SERVICE_EXPRESS_COMMERCIAL = 'EXPRESS COMMERCIAL';
+    final public const SERVICE_EXPRESS_SH = 'EXPRESS SH';
+    final public const SERVICE_EXPRESS_SH_COMMERCIAL = 'EXPRESS SH COMMERCIAL';
+    final public const SERVICE_EXPRESS_HFP = 'EXPRESS HFP';
+    final public const SERVICE_EXPRESS_HFP_COMMERCIAL = 'EXPRESS HFP COMMERCIAL';
+    final public const SERVICE_PARCEL = 'PARCEL';
+    final public const SERVICE_MEDIA = 'MEDIA';
+    final public const SERVICE_LIBRARY = 'LIBRARY';
+    final public const SERVICE_ALL = 'ALL';
+    final public const SERVICE_ONLINE = 'ONLINE';
     /**
      * First class mail type
      * required when you use one of the first class services.
      */
-    const MAIL_TYPE_LETTER = 'LETTER';
-    const MAIL_TYPE_FLAT = 'FLAT';
-    const MAIL_TYPE_PARCEL = 'PARCEL';
-    const MAIL_TYPE_POSTCARD = 'POSTCARD';
-    const MAIL_TYPE_PACKAGE = 'PACKAGE';
-    const MAIL_TYPE_PACKAGE_SERVICE = 'PACKAGE SERVICE';
+    final public const MAIL_TYPE_LETTER = 'LETTER';
+    final public const MAIL_TYPE_FLAT = 'FLAT';
+    final public const MAIL_TYPE_PARCEL = 'PARCEL';
+    final public const MAIL_TYPE_POSTCARD = 'POSTCARD';
+    final public const MAIL_TYPE_PACKAGE = 'PACKAGE';
+    final public const MAIL_TYPE_PACKAGE_SERVICE = 'PACKAGE SERVICE';
     /**
      * Container constants.
      */
-    const CONTAINER_VARIABLE = 'VARIABLE';
-    const CONTAINER_FLAT_RATE_ENVELOPE = 'FLAT RATE ENVELOPE';
-    const CONTAINER_PADDED_FLAT_RATE_ENVELOPE = 'PADDED FLAT RATE ENVELOPE';
-    const CONTAINER_LEGAL_FLAT_RATE_ENVELOPE = 'LEGAL FLAT RATE ENVELOPE';
-    const CONTAINER_SM_FLAT_RATE_ENVELOPE = 'SM FLAT RATE ENVELOPE';
-    const CONTAINER_WINDOW_FLAT_RATE_ENVELOPE = 'WINDOW FLAT RATE ENVELOPE';
-    const CONTAINER_GIFT_CARD_FLAT_RATE_ENVELOPE = 'GIFT CARD FLAT RATE ENVELOPE';
-    const CONTAINER_FLAT_RATE_BOX = 'FLAT RATE BOX';
-    const CONTAINER_SM_FLAT_RATE_BOX = 'SM FLAT RATE BOX';
-    const CONTAINER_MD_FLAT_RATE_BOX = 'MD FLAT RATE BOX';
-    const CONTAINER_LG_FLAT_RATE_BOX = 'LG FLAT RATE BOX';
-    const CONTAINER_REGIONALRATEBOXA = 'REGIONALRATEBOXA';
-    const CONTAINER_REGIONALRATEBOXB = 'REGIONALRATEBOXB';
-    const CONTAINER_RECTANGULAR = 'RECTANGULAR';
-    const CONTAINER_NONRECTANGULAR = 'NONRECTANGULAR';
+    final public const CONTAINER_VARIABLE = 'VARIABLE';
+    final public const CONTAINER_FLAT_RATE_ENVELOPE = 'FLAT RATE ENVELOPE';
+    final public const CONTAINER_PADDED_FLAT_RATE_ENVELOPE = 'PADDED FLAT RATE ENVELOPE';
+    final public const CONTAINER_LEGAL_FLAT_RATE_ENVELOPE = 'LEGAL FLAT RATE ENVELOPE';
+    final public const CONTAINER_SM_FLAT_RATE_ENVELOPE = 'SM FLAT RATE ENVELOPE';
+    final public const CONTAINER_WINDOW_FLAT_RATE_ENVELOPE = 'WINDOW FLAT RATE ENVELOPE';
+    final public const CONTAINER_GIFT_CARD_FLAT_RATE_ENVELOPE = 'GIFT CARD FLAT RATE ENVELOPE';
+    final public const CONTAINER_FLAT_RATE_BOX = 'FLAT RATE BOX';
+    final public const CONTAINER_SM_FLAT_RATE_BOX = 'SM FLAT RATE BOX';
+    final public const CONTAINER_MD_FLAT_RATE_BOX = 'MD FLAT RATE BOX';
+    final public const CONTAINER_LG_FLAT_RATE_BOX = 'LG FLAT RATE BOX';
+    final public const CONTAINER_REGIONALRATEBOXA = 'REGIONALRATEBOXA';
+    final public const CONTAINER_REGIONALRATEBOXB = 'REGIONALRATEBOXB';
+    final public const CONTAINER_RECTANGULAR = 'RECTANGULAR';
+    final public const CONTAINER_NONRECTANGULAR = 'NONRECTANGULAR';
     /**
      * Size constants.
      */
-    const SIZE_LARGE = 'LARGE';
-    const SIZE_REGULAR = 'REGULAR';
+    final public const SIZE_LARGE = 'LARGE';
+    final public const SIZE_REGULAR = 'REGULAR';
 
     /**
      * Set the service property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setService($value)
+    public function setService(string $value): self
     {
         return $this->setField('Service', $value);
     }
 
     /**
      * Set the first class mail type property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setFirstClassMailType($value)
+    public function setFirstClassMailType(string $value): self
     {
         return $this->setField('FirstClassMailType', $value);
     }
 
     /**
      * Set the zip origin property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setZipOrigination($value)
+    public function setZipOrigination(string|int $value): self
     {
         return $this->setField('ZipOrigination', $value);
     }
 
     /**
      * Set the zip destination property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setZipDestination($value)
+    public function setZipDestination(string|int $value): self
     {
         return $this->setField('ZipDestination', $value);
     }
 
     /**
      * Set the pounds property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setPounds($value)
+    public function setPounds(string|int $value): self
     {
         return $this->setField('Pounds', $value);
     }
 
     /**
      * Set the ounces property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setOunces($value)
+    public function setOunces(string|int $value): self
     {
         return $this->setField('Ounces', $value);
     }
 
     /**
      * Set the container property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setContainer($value)
+    public function setContainer(string|int $value): self
     {
         return $this->setField('Container', $value);
     }
 
     /**
      * Set the size property.
-     *
-     * @param string|int $value
-     *
-     * @return object RatePackage
      */
-    public function setSize($value)
+    public function setSize(string|int $value): self
     {
         return $this->setField('Size', $value);
     }
 
     /**
      * Add an element to the stack.
-     *
-     * @param string|int $key
-     * @param string|int $value
-     *
-     * @return object USPSAddress
      */
-    public function setField($key, $value)
+    public function setField(string|int $key, mixed $value): self
     {
         $this->packageInfo[ucwords($key)] = $value;
 
@@ -183,10 +146,8 @@ class RatePackage extends Rate
 
     /**
      * Returns a list of all the info we gathered so far in the current package object.
-     *
-     * @return array
      */
-    public function getPackageInfo()
+    public function getPackageInfo(): array
     {
         return $this->packageInfo;
     }

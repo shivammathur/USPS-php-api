@@ -2,16 +2,17 @@
 
 require_once('autoload.php');
 
+use USPS\Rate;
 use USPS\RatePackage;
 
 // Initiate and set the username provided from usps
-$rate = new \USPS\Rate('xxxx');
+$rate = new Rate('xxxx');
 
 // During test mode this seems not to always work as expected
 //$rate->setTestMode(true);
 
 // Create new package object and assign the properties
-// apartently the order you assign them is important so make sure
+// apparently the order you assign them is important so make sure
 // to set them as the example below
 // set the RatePackage for more info about the constants
 $package = new RatePackage();
@@ -29,7 +30,11 @@ $package->setField('Machinable', true);
 $rate->addPackage($package);
 
 // Perform the request and print out the result
-print_r($rate->getRate());
+try {
+    print_r($rate->getRate());
+} catch (Exception $e) {
+    // Handle any errors
+}
 print_r($rate->getArrayResponse());
 
 // Was the call successful

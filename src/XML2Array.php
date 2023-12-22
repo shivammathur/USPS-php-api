@@ -26,21 +26,17 @@ use Exception;
 
 class XML2Array
 {
-    private static $xml = null;
-    private static $encoding = 'UTF-8';
+    private static ?DOMDocument $xml = null;
 
     /**
      * Initialize the root XML node [optional].
-     *
-     * @param $version
-     * @param $encoding
-     * @param $format_output
      */
-    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true)
+    public static function init(string $version = '1.0', string $encoding = 'UTF-8', bool $format_output = true): void
     {
         self::$xml = new DOMDocument($version, $encoding);
         self::$xml->formatOutput = $format_output;
-        self::$encoding = $encoding;
+
+        self::$xml->encoding = $encoding;
     }
 
     /**
@@ -49,10 +45,8 @@ class XML2Array
      * @param $input_xml string|DOMDocument
      *
      * @throws Exception
-     *
-     * @return array
      */
-    public static function &createArray($input_xml)
+    public static function &createArray(mixed $input_xml): array
     {
         $xml = self::getXMLRoot();
 
@@ -77,22 +71,18 @@ class XML2Array
 
     /**
      * Convert an Array to XML.
-     *
-     * @param mixed $node - XML as a string or as an object of DOMDocument
-     *
-     * @return mixed
      */
-    private static function &convert($node)
+    private static function &convert(mixed $node): mixed
     {
         $output = [];
 
         switch ($node->nodeType) {
             case XML_CDATA_SECTION_NODE:
-                $output['@cdata'] = trim($node->textContent);
+                $output['@cdata'] = trim((string) $node->textContent);
                 break;
 
             case XML_TEXT_NODE:
-                $output = trim($node->textContent);
+                $output = trim((string) $node->textContent);
                 break;
 
             case XML_ELEMENT_NODE:
@@ -102,17 +92,14 @@ class XML2Array
                     $v = self::convert($child);
                     if (isset($child->tagName)) {
                         $t = $child->tagName;
-
                         // assume more nodes of same kind are coming
                         if (!isset($output[$t])) {
                             $output[$t] = [];
                         }
                         $output[$t][] = $v;
-                    } else {
+                    } elseif ($v !== '') {
                         //check if it is not an empty text node
-                        if ($v !== '') {
-                            $output = $v;
-                        }
+                        $output = $v;
                     }
                 }
 
@@ -123,7 +110,7 @@ class XML2Array
                             $output[$t] = $v[0];
                         }
                     }
-                    if (empty($output)) {
+                    if ($output === []) {
                         //for empty nodes
                         $output = '';
                     }
@@ -135,7 +122,7 @@ class XML2Array
                     foreach ($node->attributes as $attrName => $attrNode) {
                         $a[$attrName] = (string) $attrNode->value;
                     }
-                    // if its an leaf node, store the value in @value instead of directly storing it.
+                    // if it is a leaf node, store the value in @value instead of directly storing it.
                     if (!is_array($output)) {
                         $output = ['@value' => $output];
                     }
@@ -149,12 +136,10 @@ class XML2Array
 
     /**
      * Get the root XML node, if there isn't one, create it.
-     *
-     * @return DOMDocument
      */
-    private static function getXMLRoot()
+    private static function getXMLRoot(): ?DOMDocument
     {
-        if (empty(self::$xml)) {
+        if (!self::$xml instanceof DOMDocument) {
             self::init();
         }
 

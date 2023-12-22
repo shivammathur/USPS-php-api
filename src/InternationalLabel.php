@@ -2,28 +2,29 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * Class InternationalLabel.
  */
 class InternationalLabel extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'ExpressMailIntl';
+    protected string $apiVersion = 'ExpressMailIntl';
     /**
-     * @var array - route added so far.
+     * route added so far.
      */
-    protected $fields = [];
+    protected array $fields = [];
 
-    protected $contents = [];
+    protected array $contents = [];
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function createLabel()
+    public function createLabel(): bool|string
     {
         // Add contents
         if ($this->contents && count($this->contents)) {
@@ -52,17 +53,13 @@ class InternationalLabel extends USPSBase
 
     /**
      * Return the USPS confirmation/tracking number if we have one.
-     *
-     * @return string|bool
      */
-    public function getConfirmationNumber()
+    public function getConfirmationNumber(): bool|string
     {
         $response = $this->getArrayResponse();
         // Check to make sure we have it
-        if (isset($response[$this->getResponseApiName()])) {
-            if (isset($response[$this->getResponseApiName()]['BarcodeNumber'])) {
-                return $response[$this->getResponseApiName()]['BarcodeNumber'];
-            }
+        if (isset($response[$this->getResponseApiName()]) && isset($response[$this->getResponseApiName()]['BarcodeNumber'])) {
+            return $response[$this->getResponseApiName()]['BarcodeNumber'];
         }
 
         return false;
@@ -70,17 +67,13 @@ class InternationalLabel extends USPSBase
 
     /**
      * Return the USPS label as a base64 encoded string.
-     *
-     * @return string|bool
      */
-    public function getLabelContents()
+    public function getLabelContents(): bool|string
     {
         $response = $this->getArrayResponse();
         // Check to make sure we have it
-        if (isset($response[$this->getResponseApiName()])) {
-            if (isset($response[$this->getResponseApiName()]['LabelImage'])) {
-                return $response[$this->getResponseApiName()]['LabelImage'];
-            }
+        if (isset($response[$this->getResponseApiName()]) && isset($response[$this->getResponseApiName()]['LabelImage'])) {
+            return $response[$this->getResponseApiName()]['LabelImage'];
         }
 
         return false;
@@ -89,42 +82,31 @@ class InternationalLabel extends USPSBase
     /**
      * returns array of all fields added.
      *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->fields;
     }
 
     /**
      * Add shipping contents.
-     *
-     * @param      $description
-     * @param      $value
-     * @param      $pounds
-     * @param      $ounces
-     * @param int  $quantity
-     * @param null $tarrifNumber
-     * @param null $countryOfOrigin
-     *
-     * @return object
      */
     public function addContent(
-        $description,
-        $value,
-        $pounds,
-        $ounces,
-        $quantity = 1,
-        $tarrifNumber = null,
-        $countryOfOrigin = null
-    ) {
+        string $description,
+        string $value,
+        float|int $pounds,
+        float|int $ounces,
+        int $quantity = 1,
+        string|null $tariffNumber = null,
+        string|null $countryOfOrigin = null
+    ): self {
         $this->contents['ItemDetail'][] = [
             'Description'     => $description,
             'Quantity'        => $quantity,
             'Value'           => $value,
             'NetPounds'       => $pounds,
             'NetOunces'       => $ounces,
-            'HSTariffNumber'  => $tarrifNumber,
+            'HSTariffNumber'  => $tariffNumber,
             'CountryOfOrigin' => $countryOfOrigin,
         ];
 
@@ -133,34 +115,20 @@ class InternationalLabel extends USPSBase
 
     /**
      * Set the from address.
-     *
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $company
-     * @param string $address
-     * @param string $city
-     * @param string $state
-     * @param string $zip
-     * @param string $address2
-     * @param string $zip4
-     * @param string $phone
-     * @param string $middleName
-     *
-     * @return object
      */
     public function setFromAddress(
-        $firstName,
-        $lastName,
-        $company,
-        $address,
-        $city,
-        $state,
-        $zip,
-        $address2 = null,
-        $zip4 = null,
-        $phone = null,
-        $middleName = null
-    ) {
+        string $firstName,
+        string $lastName,
+        string $company,
+        string $address,
+        string $city,
+        string $state,
+        string $zip,
+        string|null $address2 = null,
+        string|null $zip4 = null,
+        string|null $phone = null,
+        string|null $middleName = null
+    ): self {
         $this->setField(5, 'FromFirstName', $firstName);
         $this->setField(6, 'FromMiddleInitial', $middleName);
         $this->setField(7, 'FromLastName', $lastName);
@@ -178,41 +146,22 @@ class InternationalLabel extends USPSBase
 
     /**
      * Set the to address.
-     *
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $company
-     * @param string $address
-     * @param string $city
-     * @param string $province
-     * @param string $country
-     * @param string $zip
-     * @param string $address2
-     * @param string $poBoxFlag
-     * @param string $phone
-     * @param null   $fax
-     * @param null   $email
-     *
-     * @return object
-     *
-     * @internal param string $state
-     * @internal param string $zip4
      */
     public function setToAddress(
-        $firstName,
-        $lastName,
-        $company,
-        $address,
-        $city,
-        $province,
-        $country,
-        $zip,
-        $address2 = null,
-        $poBoxFlag = 'N',
-        $phone = null,
-        $fax = null,
-        $email = null
-    ) {
+        string $firstName,
+        string $lastName,
+        string $company,
+        string $address,
+        string $city,
+        string $province,
+        string $country,
+        string $zip,
+        string|null $address2 = null,
+        string $poBoxFlag = 'N',
+        string|null $phone = null,
+        string|null $fax = null,
+        string|null $email = null
+    ): self {
         $this->setField(16, 'ToFirstName', $firstName);
         $this->setField(17, 'ToLastName', $lastName);
         $this->setField(18, 'ToFirm', $company);
@@ -231,16 +180,10 @@ class InternationalLabel extends USPSBase
     }
 
     /**
-     * Set any other requried string make sure you set the correct position as well
+     * Set any other required string make sure you set the correct position as well
      * as the position of the items matters.
-     *
-     * @param int    $position
-     * @param string $key
-     * @param string $value
-     *
-     * @return object
      */
-    public function setField($position, $key, $value)
+    public function setField(int $position, string $key, mixed $value): self
     {
         $this->fields[$position.':'.$key] = $value;
 
@@ -249,12 +192,8 @@ class InternationalLabel extends USPSBase
 
     /**
      * Set package weight in ounces.
-     *
-     * @param $weight
-     *
-     * @return $this
      */
-    public function setWeightOunces($weight)
+    public function setWeightOunces(mixed $weight): self
     {
         $this->setField(33, 'GrossOunces', $weight);
 
@@ -263,12 +202,8 @@ class InternationalLabel extends USPSBase
 
     /**
      * Set package weight in ounces.
-     *
-     * @param $weight
-     *
-     * @return $this
      */
-    public function setWeightPounds($weight)
+    public function setWeightPounds(mixed $weight): self
     {
         $this->setField(32, 'GrossPounds', $weight);
 
@@ -277,10 +212,8 @@ class InternationalLabel extends USPSBase
 
     /**
      * Add missing required elements.
-     *
-     * @return void
      */
-    protected function addMissingRequired()
+    protected function addMissingRequired(): void
     {
         $required = [
             '1:Option'           => '',

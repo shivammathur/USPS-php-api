@@ -2,6 +2,8 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * USPS Rate calculator class
  * used to get a rate for shipping methods.
@@ -13,20 +15,19 @@ namespace USPS;
 class Rate extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'RateV4';
+    protected string $apiVersion = 'RateV4';
     /**
-     * @var array - list of all addresses added so far
+     * list of all addresses added so far
      */
-    protected $packages = [];
+    protected array $packages = [];
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function getRate()
+    public function getRate(): bool|string
     {
         return $this->doRequest();
     }
@@ -34,9 +35,8 @@ class Rate extends USPSBase
     /**
      * returns array of all packages added so far.
      *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->packages;
     }
@@ -45,21 +45,16 @@ class Rate extends USPSBase
      * sets the type of call to perform domestic or international.
      *
      * @param $status
-     *
-     * @return array
      */
-    public function setInternationalCall($status)
+    public function setInternationalCall($status): void
     {
         $this->apiVersion = $status === true ? 'IntlRateV2' : 'RateV4';
     }
 
     /**
      * Add other option for International & Insurance.
-     *
-     * @param string|int $key
-     * @param string|int $value
      */
-    public function addExtraOption($key, $value)
+    public function addExtraOption(int|string $key, int|string $value): void
     {
         $this->packages[$key][] = $value;
     }
@@ -67,12 +62,11 @@ class Rate extends USPSBase
     /**
      * Add Package to the stack.
      *
-     * @param RatePackage $data
      * @param string      $id   the address unique id
      */
-    public function addPackage(RatePackage $data, $id = null)
+    public function addPackage(RatePackage $data, mixed $id = null): void
     {
-        $packageId = $id !== null ? $id : ((count($this->packages) + 1));
+        $packageId = $id ?? count($this->packages) + 1;
 
         $this->packages['Package'][] = array_merge(['@attributes' => ['ID' => $packageId]], $data->getPackageInfo());
     }

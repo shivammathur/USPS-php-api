@@ -2,9 +2,10 @@
 
 require_once('autoload.php');
 
+use USPS\Rate;
 use USPS\RatePackage;
 
-$rate = new \USPS\Rate('xxxx');
+$rate = new Rate('xxxx');
 $rate->setInternationalCall(true);
 $rate->addExtraOption('Revision', 2);
 
@@ -33,7 +34,11 @@ $package->setField('DestinationPostalCode', '2046');
 // add the package to the rate stack
 $rate->addPackage($package);
 // Perform the request and print out the result
-print_r($rate->getRate());
+try {
+    print_r($rate->getRate());
+} catch (Exception $e) {
+    // Handle any errors
+}
 print_r($rate->getArrayResponse());
 // Was the call successful
 if ($rate->isSuccess()) {

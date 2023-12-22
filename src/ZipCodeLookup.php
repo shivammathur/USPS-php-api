@@ -2,6 +2,8 @@
 
 namespace USPS;
 
+use Exception;
+
 /**
  * USPS Zip code lookup by city/state
  * used to find a zip code by city/state lookup.
@@ -13,20 +15,19 @@ namespace USPS;
 class ZipCodeLookup extends USPSBase
 {
     /**
-     * @var string - the api version used for this type of call
+     * the api version used for this type of call
      */
-    protected $apiVersion = 'ZipCodeLookup';
+    protected string $apiVersion = 'ZipCodeLookup';
     /**
-     * @var array - list of all addresses added so far
+     * list of all addresses added so far
      */
-    protected $addresses = [];
+    protected array $addresses = [];
 
     /**
      * Perform the API call.
-     *
-     * @return string
+     * @throws Exception
      */
-    public function lookup()
+    public function lookup(): bool|string
     {
         return $this->doRequest();
     }
@@ -34,22 +35,18 @@ class ZipCodeLookup extends USPSBase
     /**
      * returns array of all addresses added so far.
      *
-     * @return array
      */
-    public function getPostFields()
+    public function getPostFields(): array
     {
         return $this->addresses;
     }
 
     /**
      * Add Address to the stack.
-     *
-     * @param Address $data
-     * @param string  $id   the address unique id
      */
-    public function addAddress(Address $data, $id = null)
+    public function addAddress(Address $data, string|int $id = null): void
     {
-        $packageId = $id !== null ? $id : ((count($this->addresses) + 1));
+        $packageId = $id ?? count($this->addresses) + 1;
 
         $this->addresses['Address'][] = array_merge(['@attributes' => ['ID' => $packageId]], $data->getAddressInfo());
     }

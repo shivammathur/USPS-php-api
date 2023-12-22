@@ -15,7 +15,7 @@ namespace USPS;
  * Version: 0.1 (10 July 2011)
  * Version: 0.2 (16 August 2011)
  *          - replaced htmlentities() with htmlspecialchars() (Thanks to Liel Dulev)
- *          - fixed a edge case where root node has a false/null/0 value. (Thanks to Liel Dulev)
+ *          - fixed an edge case where root node has a false/null/0 value. (Thanks to Liel Dulev)
  * Version: 0.3 (22 August 2011)
  *          - fixed tag sanitize regex which didn't allow tagnames with single character.
  * Version: 0.4 (18 September 2011)
@@ -33,24 +33,18 @@ namespace USPS;
  */
 
 use DOMDocument;
+use DOMNode;
 use Exception;
 
 class XMLParser
 {
-    /**
-     * @var DOMDocument
-     */
-    private static $xml = null;
-    private static $encoding = 'UTF-8';
+    private static ?DOMDocument $xml = null;
+    private static string $encoding = 'UTF-8';
 
     /**
      * Initialize the root XML node [optional].
-     *
-     * @param $version
-     * @param $encoding
-     * @param $format_output
      */
-    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true)
+    public static function init($version = '1.0', string $encoding = 'UTF-8', bool $format_output = true): void
     {
         self::$xml = new DOMDocument($version, $encoding);
         self::$xml->formatOutput = $format_output;
@@ -59,13 +53,9 @@ class XMLParser
 
     /**
      * Convert an Array to XML.
-     *
-     * @param string $node_name - name of the root node to be converted
-     * @param array  $arr       - aray to be converterd
-     *
-     * @return DOMDocument
+     * @throws Exception
      */
-    public static function &createXML($node_name, $arr = [])
+    public static function &createXML(string $node_name, mixed $arr = []): ?DOMDocument
     {
         $xml = self::getXMLRoot();
         $xml->appendChild(self::convert($node_name, $arr));
@@ -76,60 +66,47 @@ class XMLParser
 
     /**
      * Convert an Array to XML.
-     *
-     * @param string $node_name - name of the root node to be converted
-     * @param array  $arr       - aray to be converterd
-     *
      * @throws Exception
-     *
-     * @return DOMNode
      */
-    private static function &convert($node_name, $arr = [])
+    private static function &convert(string $node_name, mixed $arr = []): DOMNode
     {
 
         //print_arr($node_name);
         $xml = self::getXMLRoot();
         $node = $xml->createElement($node_name);
-
-        if (is_array($arr)) {
-            // get the attributes first.;
-            if (isset($arr['@attributes'])) {
-                foreach ($arr['@attributes'] as $key => $value) {
-                    if (!self::isValidTagName($key)) {
-                        throw new Exception('[XMLParser] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
-                    }
-                    $node->setAttribute($key, htmlspecialchars(self::bool2str($value), ENT_QUOTES, self::$encoding));
+        // get the attributes first.;
+        if (isset($arr['@attributes'])) {
+            foreach ($arr['@attributes'] as $key => $value) {
+                if (!self::isValidTagName($key)) {
+                    throw new Exception('[XMLParser] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
                 }
-                unset($arr['@attributes']); //remove the key from the array once done.
+                $node->setAttribute($key, htmlspecialchars((string) self::bool2str($value), ENT_QUOTES, self::$encoding));
             }
-
-            // check if it has a value stored in @value, if yes store the value and return
-            // else check if its directly stored as string
-            if (isset($arr['@value'])) {
-                $node->appendChild($xml->createTextNode(htmlspecialchars(self::bool2str($arr['@value']), ENT_QUOTES, self::$encoding)));
-                unset($arr['@value']);    //remove the key from the array once done.
-                //return from recursion, as a note with value cannot have child nodes.
-                return $node;
-            } elseif (isset($arr['@cdata'])) {
-                $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
-                unset($arr['@cdata']);    //remove the key from the array once done.
-                //return from recursion, as a note with cdata cannot have child nodes.
-                return $node;
-            }
+            unset($arr['@attributes']); //remove the key from the array once done.
+        }
+        if (isset($arr['@value'])) {
+            $node->appendChild($xml->createTextNode(htmlspecialchars((string) self::bool2str($arr['@value']), ENT_QUOTES, self::$encoding)));
+            unset($arr['@value']);    //remove the key from the array once done.
+            //return from recursion, as a note with value cannot have child nodes.
+            return $node;
+        } elseif (isset($arr['@cdata'])) {
+            $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
+            unset($arr['@cdata']);    //remove the key from the array once done.
+            //return from recursion, as a note with cdata cannot have child nodes.
+            return $node;
         }
 
         //create subnodes using recursion
         if (is_array($arr)) {
-            // recurse to get the node for that key
             foreach ($arr as $key => $value) {
                 if (!self::isValidTagName($key)) {
-                    throw new Exception('[XMLParser] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
+                    throw new Exception('[XMLParser] Illegal character in tag name. tag: ' . $key . ' in node: ' . $node_name);
                 }
                 if (is_array($value) && is_numeric(key($value))) {
                     // MORE THAN ONE NODE OF ITS KIND;
                     // if the new array is numeric index, means it is array of nodes of the same kind
                     // it should follow the parent key name
-                    foreach ($value as $k => $v) {
+                    foreach ($value as $v) {
                         $node->appendChild(self::convert($key, $v));
                     }
                 } else {
@@ -142,8 +119,8 @@ class XMLParser
 
         // after we are done with all the keys in the array (if it is one)
         // we check if it has any text value, if yes, append it.
-        if (!is_array($arr) && !is_object($arr)) {
-            $node->appendChild($xml->createTextNode(htmlspecialchars(self::bool2str($arr), ENT_QUOTES, self::$encoding)));
+        if (!is_array($arr)) {
+            $node->appendChild($xml->createTextNode(htmlspecialchars((string) self::bool2str($arr), ENT_QUOTES, self::$encoding)));
         }
 
         return $node;
@@ -152,9 +129,9 @@ class XMLParser
     /**
      * Get the root XML node, if there isn't one, create it.
      */
-    private static function getXMLRoot()
+    private static function getXMLRoot(): ?DOMDocument
     {
-        if (empty(self::$xml)) {
+        if (!self::$xml instanceof DOMDocument) {
             self::init();
         }
 
@@ -168,19 +145,18 @@ class XMLParser
     {
         //convert boolean to text value.
         $v = $v === true ? 'true' : $v;
-        $v = $v === false ? 'false' : $v;
 
-        return $v;
+        return $v === false ? 'false' : $v;
     }
 
     /**
      * Check if the tag name or attribute name contains illegal characters
      * Ref: http://www.w3.org/TR/xml/#sec-common-syn.
      */
-    private static function isValidTagName($tag)
+    private static function isValidTagName($tag): bool
     {
-        $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
+        $pattern = '/^[a-z_]+[a-z0-9:\-._]*[^:]*$/i';
 
-        return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
+        return preg_match($pattern, (string) $tag, $matches) && $matches[0] == $tag;
     }
 }

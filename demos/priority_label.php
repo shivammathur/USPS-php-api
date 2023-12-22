@@ -1,9 +1,11 @@
 <?php
 
+use USPS\PriorityLabel;
+
 require_once('autoload.php');
 
 // Initiate and set the username provided from usps
-$label = new \USPS\PriorityLabel('xxxx');
+$label = new PriorityLabel('xxxx');
 
 // During test mode this seems not to always work as expected
 $label->setTestMode(true);
@@ -16,7 +18,11 @@ $label->setField(36, 'LabelDate', '03/12/2014');
 //$label->setField(32, 'SeparateReceiptPage', 'true');
 
 // Perform the request and return result
-$label->createLabel();
+try {
+    $label->createLabel();
+} catch (Exception $e) {
+    // Handle any errors
+}
 
 //print_r($label->getArrayResponse());
 //print_r($label->getPostData());

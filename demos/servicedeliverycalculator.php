@@ -1,9 +1,11 @@
 <?php
 
+use USPS\ServiceDeliveryCalculator;
+
 require_once('autoload.php');
 
 // Initiate and set the username provided from usps
-$delivery = new \USPS\ServiceDeliveryCalculator('xxxx');
+$delivery = new ServiceDeliveryCalculator('xxxx');
 
 // During test mode this seems not to always work as expected
 $delivery->setTestMode(true);
@@ -12,7 +14,11 @@ $delivery->setTestMode(true);
 $delivery->addRoute(3, '91730', '90025');
 
 // Perform the call and print out the results
-var_dump($delivery->getServiceDeliveryCalculation());
+try {
+    var_dump($delivery->getServiceDeliveryCalculation());
+} catch (Exception $e) {
+    // Handle any errors
+}
 var_dump($delivery->getArrayResponse());
 
 

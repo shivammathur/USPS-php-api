@@ -1,9 +1,11 @@
 <?php
 
+use USPS\CityStateLookup;
+
 require_once('autoload.php');
 
 // Initiate and set the username provided from usps
-$verify = new \USPS\CityStateLookup('xxxx');
+$verify = new CityStateLookup('xxxx');
 
 // During test mode this seems not to always work as expected
 //$verify->setTestMode(true);
@@ -12,7 +14,11 @@ $verify = new \USPS\CityStateLookup('xxxx');
 $verify->addZipCode('91730');
 
 // Perform the call and print out the results
-print_r($verify->lookup());
+try {
+    print_r($verify->lookup());
+} catch (Exception $e) {
+    // Handle any errors
+}
 print_r($verify->getArrayResponse());
 
 // Check if it was completed

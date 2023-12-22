@@ -1,10 +1,14 @@
 {
-  "name":        "vinceg/usps-php-api",
+  "name":        "shivammathur/usps-php-api",
   "type":        "library",
   "description": "PHP wrapper for USPS Web Tools API",
   "keywords":    ["usps", "api"],
   "license":     "MIT",
   "authors":     [
+    {
+      "name":     "Shivam Mathur",
+      "role":     "Developer"
+    },
     {
       "name":     "Vincent Gabriel",
       "homepage": "http://vadimg.com",
@@ -20,12 +24,16 @@
     }
   ],
   "require":     {
-    "php":      ">=5.4",
-    "ext-curl": "*"
+    "php":      ">=8.2",
+    "ext-curl": "*",
+    "ext-dom": "*"
   },
   "autoload":    {
     "psr-4": {
       "USPS\\": "src/"
     }
+  },
+  "require-dev": {
+    "rector/rector": "^0.18.13"
   }
 }
