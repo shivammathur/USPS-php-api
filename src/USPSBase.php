@@ -85,11 +85,13 @@ abstract class USPSBase
 
     /**
      * Constructor.
-     *
-     * @param string $username - the usps api username
      */
-    public function __construct(protected string $username = '')
+    public function __construct(
+        protected string $username = '',
+        protected string $http_proxy = '',
+    )
     {
+        //
     }
 
     /**
@@ -98,6 +100,14 @@ abstract class USPSBase
     public function setUsername(string $username): void
     {
         $this->username = $username;
+    }
+
+    /**
+     * set the http proxy to use when connecting to USPS.
+     */
+    public function setHttpProxy(string $http_proxy): void
+    {
+        $this->http_proxy = $http_proxy;
     }
 
     /**
@@ -152,6 +162,11 @@ abstract class USPSBase
         // Replace 443 with 80 if it's not secured
         if (!str_contains($opts[CURLOPT_URL], 'https://')) {
             $opts[CURLOPT_PORT] = 80;
+        }
+
+        // Set the proxy if we have one
+        if ($this->http_proxy) {
+            $opts[CURLOPT_PROXY] = $this->http_proxy;
         }
 
         // set options
