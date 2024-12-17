@@ -165,7 +165,7 @@ abstract class USPSBase
         }
 
         // Set the proxy if we have one
-        if ($this->http_proxy) {
+        if ($this->http_proxy !== '' && $this->http_proxy !== '0') {
             $opts[CURLOPT_PROXY] = $this->http_proxy;
         }
 

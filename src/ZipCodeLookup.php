@@ -44,7 +44,7 @@ class ZipCodeLookup extends USPSBase
     /**
      * Add Address to the stack.
      */
-    public function addAddress(Address $data, string|int $id = null): void
+    public function addAddress(Address $data, string|int|null $id = null): void
     {
         $packageId = $id ?? count($this->addresses) + 1;
 

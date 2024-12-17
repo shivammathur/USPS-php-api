@@ -18,6 +18,7 @@ class TrackConfirm extends USPSBase
      */
     protected array $packages = [];
 
+    #[\Override]
     public function getEndpoint(): string
     {
         return self::$testMode ? 'https://production.shippingapis.com/ShippingAPITest.dll' : 'https://production.shippingapis.com/ShippingAPI.dll';

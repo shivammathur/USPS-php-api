@@ -11,7 +11,7 @@
     },
     {
       "name":     "Vincent Gabriel",
-      "homepage": "http://vadimg.com",
+      "homepage": "https://vadimg.com",
       "role":     "Developer"
     },
     {
@@ -24,7 +24,7 @@
     }
   ],
   "require":     {
-    "php":      ">=8.2",
+    "php":      ">=8.4",
     "ext-curl": "*",
     "ext-dom": "*"
   },
@@ -34,6 +34,6 @@
     }
   },
   "require-dev": {
-    "rector/rector": "^0.18.13"
+    "rector/rector": "^2.0.3"
   }
 }

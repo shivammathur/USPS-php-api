@@ -19,56 +19,56 @@ class RatePackage extends Rate
     /**
      * Services constants.
      */
-    final public const SERVICE_FIRST_CLASS = 'FIRST CLASS';
-    final public const SERVICE_FIRST_CLASS_COMMERCIAL = 'FIRST CLASS COMMERCIAL';
-    final public const SERVICE_FIRST_CLASS_HFP_COMMERCIAL = 'FIRST CLASS HFP COMMERCIAL';
-    final public const SERVICE_PRIORITY = 'PRIORITY';
-    final public const SERVICE_PRIORITY_COMMERCIAL = 'PRIORITY COMMERCIAL';
-    final public const SERVICE_PRIORITY_HFP_COMMERCIAL = 'PRIORITY HFP COMMERCIAL';
-    final public const SERVICE_EXPRESS = 'EXPRESS';
-    final public const SERVICE_EXPRESS_COMMERCIAL = 'EXPRESS COMMERCIAL';
-    final public const SERVICE_EXPRESS_SH = 'EXPRESS SH';
-    final public const SERVICE_EXPRESS_SH_COMMERCIAL = 'EXPRESS SH COMMERCIAL';
-    final public const SERVICE_EXPRESS_HFP = 'EXPRESS HFP';
-    final public const SERVICE_EXPRESS_HFP_COMMERCIAL = 'EXPRESS HFP COMMERCIAL';
-    final public const SERVICE_PARCEL = 'PARCEL';
-    final public const SERVICE_MEDIA = 'MEDIA';
-    final public const SERVICE_LIBRARY = 'LIBRARY';
-    final public const SERVICE_ALL = 'ALL';
-    final public const SERVICE_ONLINE = 'ONLINE';
+    final public const string SERVICE_FIRST_CLASS = 'FIRST CLASS';
+    final public const string SERVICE_FIRST_CLASS_COMMERCIAL = 'FIRST CLASS COMMERCIAL';
+    final public const string SERVICE_FIRST_CLASS_HFP_COMMERCIAL = 'FIRST CLASS HFP COMMERCIAL';
+    final public const string SERVICE_PRIORITY = 'PRIORITY';
+    final public const string SERVICE_PRIORITY_COMMERCIAL = 'PRIORITY COMMERCIAL';
+    final public const string SERVICE_PRIORITY_HFP_COMMERCIAL = 'PRIORITY HFP COMMERCIAL';
+    final public const string SERVICE_EXPRESS = 'EXPRESS';
+    final public const string SERVICE_EXPRESS_COMMERCIAL = 'EXPRESS COMMERCIAL';
+    final public const string SERVICE_EXPRESS_SH = 'EXPRESS SH';
+    final public const string SERVICE_EXPRESS_SH_COMMERCIAL = 'EXPRESS SH COMMERCIAL';
+    final public const string SERVICE_EXPRESS_HFP = 'EXPRESS HFP';
+    final public const string SERVICE_EXPRESS_HFP_COMMERCIAL = 'EXPRESS HFP COMMERCIAL';
+    final public const string SERVICE_PARCEL = 'PARCEL';
+    final public const string SERVICE_MEDIA = 'MEDIA';
+    final public const string SERVICE_LIBRARY = 'LIBRARY';
+    final public const string SERVICE_ALL = 'ALL';
+    final public const string SERVICE_ONLINE = 'ONLINE';
     /**
      * First class mail type
      * required when you use one of the first class services.
      */
-    final public const MAIL_TYPE_LETTER = 'LETTER';
-    final public const MAIL_TYPE_FLAT = 'FLAT';
-    final public const MAIL_TYPE_PARCEL = 'PARCEL';
-    final public const MAIL_TYPE_POSTCARD = 'POSTCARD';
-    final public const MAIL_TYPE_PACKAGE = 'PACKAGE';
-    final public const MAIL_TYPE_PACKAGE_SERVICE = 'PACKAGE SERVICE';
+    final public const string MAIL_TYPE_LETTER = 'LETTER';
+    final public const string MAIL_TYPE_FLAT = 'FLAT';
+    final public const string MAIL_TYPE_PARCEL = 'PARCEL';
+    final public const string MAIL_TYPE_POSTCARD = 'POSTCARD';
+    final public const string MAIL_TYPE_PACKAGE = 'PACKAGE';
+    final public const string MAIL_TYPE_PACKAGE_SERVICE = 'PACKAGE SERVICE';
     /**
      * Container constants.
      */
-    final public const CONTAINER_VARIABLE = 'VARIABLE';
-    final public const CONTAINER_FLAT_RATE_ENVELOPE = 'FLAT RATE ENVELOPE';
-    final public const CONTAINER_PADDED_FLAT_RATE_ENVELOPE = 'PADDED FLAT RATE ENVELOPE';
-    final public const CONTAINER_LEGAL_FLAT_RATE_ENVELOPE = 'LEGAL FLAT RATE ENVELOPE';
-    final public const CONTAINER_SM_FLAT_RATE_ENVELOPE = 'SM FLAT RATE ENVELOPE';
-    final public const CONTAINER_WINDOW_FLAT_RATE_ENVELOPE = 'WINDOW FLAT RATE ENVELOPE';
-    final public const CONTAINER_GIFT_CARD_FLAT_RATE_ENVELOPE = 'GIFT CARD FLAT RATE ENVELOPE';
-    final public const CONTAINER_FLAT_RATE_BOX = 'FLAT RATE BOX';
-    final public const CONTAINER_SM_FLAT_RATE_BOX = 'SM FLAT RATE BOX';
-    final public const CONTAINER_MD_FLAT_RATE_BOX = 'MD FLAT RATE BOX';
-    final public const CONTAINER_LG_FLAT_RATE_BOX = 'LG FLAT RATE BOX';
-    final public const CONTAINER_REGIONALRATEBOXA = 'REGIONALRATEBOXA';
-    final public const CONTAINER_REGIONALRATEBOXB = 'REGIONALRATEBOXB';
-    final public const CONTAINER_RECTANGULAR = 'RECTANGULAR';
-    final public const CONTAINER_NONRECTANGULAR = 'NONRECTANGULAR';
+    final public const string CONTAINER_VARIABLE = 'VARIABLE';
+    final public const string CONTAINER_FLAT_RATE_ENVELOPE = 'FLAT RATE ENVELOPE';
+    final public const string CONTAINER_PADDED_FLAT_RATE_ENVELOPE = 'PADDED FLAT RATE ENVELOPE';
+    final public const string CONTAINER_LEGAL_FLAT_RATE_ENVELOPE = 'LEGAL FLAT RATE ENVELOPE';
+    final public const string CONTAINER_SM_FLAT_RATE_ENVELOPE = 'SM FLAT RATE ENVELOPE';
+    final public const string CONTAINER_WINDOW_FLAT_RATE_ENVELOPE = 'WINDOW FLAT RATE ENVELOPE';
+    final public const string CONTAINER_GIFT_CARD_FLAT_RATE_ENVELOPE = 'GIFT CARD FLAT RATE ENVELOPE';
+    final public const string CONTAINER_FLAT_RATE_BOX = 'FLAT RATE BOX';
+    final public const string CONTAINER_SM_FLAT_RATE_BOX = 'SM FLAT RATE BOX';
+    final public const string CONTAINER_MD_FLAT_RATE_BOX = 'MD FLAT RATE BOX';
+    final public const string CONTAINER_LG_FLAT_RATE_BOX = 'LG FLAT RATE BOX';
+    final public const string CONTAINER_REGIONALRATEBOXA = 'REGIONALRATEBOXA';
+    final public const string CONTAINER_REGIONALRATEBOXB = 'REGIONALRATEBOXB';
+    final public const string CONTAINER_RECTANGULAR = 'RECTANGULAR';
+    final public const string CONTAINER_NONRECTANGULAR = 'NONRECTANGULAR';
     /**
      * Size constants.
      */
-    final public const SIZE_LARGE = 'LARGE';
-    final public const SIZE_REGULAR = 'REGULAR';
+    final public const string SIZE_LARGE = 'LARGE';
+    final public const string SIZE_REGULAR = 'REGULAR';
 
     /**
      * Set the service property.

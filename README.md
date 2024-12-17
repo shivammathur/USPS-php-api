@@ -16,7 +16,7 @@ This wrapper allows you to perform some basic calls to the USPS api. Some of the
 Requirements
 ============
 
-- PHP >= 8.2
+- PHP >= 8.4
 - Configured with the dom and cURL extensions
 - USPS API Username
 
@@ -36,8 +36,8 @@ Please check the 'demos' directory for usage examples on the various types of ap
 
 Authors
 =======
-Vincent Gabriel <http://vadimg.com>
-Shivam Mathur <http://shivammathur.com>
+Vincent Gabriel <https://vadimg.com>
+Shivam Mathur <https://shivammathur.com>
 
 License
 =======
